@@ -1,3 +1,4 @@
+```
 IP_sim/
 ├── client/                      # Código relacionado ao Cliente
 │   ├── client.go                # Implementação principal do Cliente
@@ -35,4 +36,4 @@ IP_sim/
 ├── go.mod                       # Gerenciamento de dependências do Go
 ├── .gitignore
 └── README.md
-
+```
