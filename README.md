@@ -1,4 +1,6 @@
-```
+# Estrutura do Repositório
+
+```bash
 IP_sim/
 ├── client/                      # Código relacionado ao Cliente
 │   ├── client.go                # Implementação principal do Cliente
@@ -30,7 +32,10 @@ IP_sim/
 │   ├── utils/                   # Utilidades gerais
 │   │   ├── encoding.go          # Funções auxiliares de codificação
 │   │   └── math.go              # Funções matemáticas úteis
-│   ├── protocol.go              # Protocolo comum de comunicação
+│   ├── communication/           # Sockets
+│   │   ├── socket_client.go
+│   │   ├── socket_server.go
+│   │   └── protocol.go          # Protocolo de comunicação
 │   └── constants.go             # Constantes compartilhadas
 ├── main.go                      # Ponto de entrada da aplicação
 ├── go.mod                       # Gerenciamento de dependências do Go
