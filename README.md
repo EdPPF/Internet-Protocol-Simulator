@@ -1,4 +1,32 @@
-# Estrutura do Repositório
+## Como rodar o projeto
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/EdPPF/Internet-Protocol-Simulator.git
+cd Internet-Protocol-Simulator
+```
+
+Baixe as dependências e atualize `go.mod` para que o projeto funcione corretamente:
+
+```bash
+go mod tidy
+```
+
+Abra duas janelas de terminal (ambas devem estar na raiz do respositório).
+Inicie o servidor em uma delas:
+
+```bash
+go run main.go server
+```
+
+Inicie o cliente em outra:
+
+```bash
+go run main.go client
+```
+
+## Estrutura do Repositório
 
 ```bash
 IP_sim/
