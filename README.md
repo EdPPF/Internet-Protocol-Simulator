@@ -70,3 +70,10 @@ IP_sim/
 ├── .gitignore
 └── README.md
 ```
+
+## Legenda para Issues
+1.1.1  - Camada física - modulação digital
+1.1.2  - Camada física - modulação por portadora
+1.3    - Camada de enlace - protocolos de enquadramento de dados
+1.4    - Camada de enlace - protocolos de detecção de erros
+1.5    - Camada de enlace - protocolos de correção de erros
