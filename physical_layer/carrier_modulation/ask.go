@@ -53,6 +53,26 @@ func plotSignal(signal []float64, A float64) {
 	}
 }
 
+func askDemodulation(signal []float64) []int {
+	var signalLen = len(signal)
+	var demodulatedSignal []int
+	for i := 0; i < signalLen; i+= 100 {
+		foundNonZero := false
+		for _, v := range signal[i : i+100] {
+			if v != 0 {
+				foundNonZero = true
+				break
+			}
+		}
+		if foundNonZero {
+			demodulatedSignal = append(demodulatedSignal, 1)
+		} else {
+			demodulatedSignal = append(demodulatedSignal, 0)
+		}
+	}
+	return demodulatedSignal
+}
+
 func main() {
 	if len(os.Args) < 3 {
 		fmt.Println("Usage: go run ask.go <amplitude> <frequency>")
@@ -76,4 +96,7 @@ func main() {
 	modulatedSignal := askModulation(amplitude, frequency, data)
 
 	fmt.Println("Modulated Signal:", modulatedSignal)
+
+	demodulatedSignal := askDemodulation(modulatedSignal)
+	fmt.Println("Demodulated Signal:", demodulatedSignal)
 }

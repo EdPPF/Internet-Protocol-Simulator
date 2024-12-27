@@ -44,7 +44,7 @@ func qam8Modulation(A float64, f float64, bitStream []int) []float64 {
 		
 		coordinate := mappingBinary[int(group[0])*4 + int(group[1])*2 + int(group[2])]
 		for k := 0; k < 100; k++ {
-			modulatedSignal[i*100+k] = A * coordinate.amplitude * math.Sin(2 * math.Pi * (f + coordinate.phase) * float64(k) / 100)
+			modulatedSignal[i*100+k] = A * coordinate.amplitude * math.Sin((2 * math.Pi * f * float64(k) / 100) + coordinate.phase)
 		}
 	}
 	plotSignal(modulatedSignal, A)
@@ -75,6 +75,80 @@ func plotSignal(signal []float64, A float64) {
 	}
 }
 
+func qam8Demodulation(modulatedSignal []float64, A float64, f float64) []int {
+    numSymbols := len(modulatedSignal) / 100
+    demodulatedBits := make([]int, numSymbols*3)
+
+    for i := 0; i < numSymbols; i++ {
+		firstCoordinate := modulatedSignal[i*100]
+		secondCoordinate := modulatedSignal[i*100+1]
+
+		fmt.Println("First Coordinate:", firstCoordinate)
+		fmt.Println("Second Coordinate:", secondCoordinate)
+
+		// 0:
+		if firstCoordinate > -A/2 && firstCoordinate < A/2 {
+			if secondCoordinate > firstCoordinate {
+				// upwards
+				demodulatedBits[i*3] = 0
+				demodulatedBits[i*3+1] = 0
+				demodulatedBits[i*3+2] = 0
+			} else {
+				// downwards
+				demodulatedBits[i*3] = 0
+				demodulatedBits[i*3+1] = 1
+				demodulatedBits[i*3+2] = 0
+			}
+		}
+
+		// A:
+		if firstCoordinate <= A && firstCoordinate >= A/2 {
+			demodulatedBits[i*3] = 0
+			demodulatedBits[i*3+1] = 0
+			demodulatedBits[i*3+2] = 1
+		}
+
+		// -A:
+		if firstCoordinate >= -A && firstCoordinate <= -A/2 {
+			demodulatedBits[i*3] = 0
+			demodulatedBits[i*3+1] = 1
+			demodulatedBits[i*3+2] = 1
+		}
+
+		// ~2A:
+		if firstCoordinate > A {
+			if secondCoordinate > firstCoordinate {
+				// upwards
+				demodulatedBits[i*3] = 1
+				demodulatedBits[i*3+1] = 0
+				demodulatedBits[i*3+2] = 0
+			} else {
+				// downwards
+				demodulatedBits[i*3] = 1
+				demodulatedBits[i*3+1] = 0
+				demodulatedBits[i*3+2] = 1
+			} 
+		}
+
+		// ~-2A:
+		if firstCoordinate < -A {
+			if secondCoordinate > firstCoordinate {
+				// upwards
+				demodulatedBits[i*3] = 1
+				demodulatedBits[i*3+1] = 1
+				demodulatedBits[i*3+2] = 1
+			} else {
+				// downwards
+				demodulatedBits[i*3] = 1
+				demodulatedBits[i*3+1] = 1
+				demodulatedBits[i*3+2] = 0
+			}
+		}
+	}
+
+    return demodulatedBits
+}
+
 func main() {
 	if len(os.Args) < 3 {
 		fmt.Println("Usage: go run qam_8.go <amplitude> <frequency>")
@@ -94,8 +168,11 @@ func main() {
 	}
 
 	// Example input data
-	data := []int{1, 0, 1, 1, 0}
+	data := []int{1, 1, 1, 1, 0}
 	modulatedSignal := qam8Modulation(amplitude, frequency, data)
 
 	fmt.Println("Modulated Signal:", modulatedSignal)
+
+	demodulatedSignal := qam8Demodulation(modulatedSignal, amplitude, frequency)
+	fmt.Println("Demodulated Signal:", demodulatedSignal)
 }

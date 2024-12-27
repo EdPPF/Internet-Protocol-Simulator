@@ -25,6 +25,20 @@ func manchesterModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
+func manchesterDemodulation(signal []float64) []int {
+	// Placeholder for demodulation logic
+	var signalLen = len(signal)
+	var demodulatedSignal []int
+	for i := 0; i < signalLen; i+= 2 {
+		if signal[i] > 0 && signal[i+1] < 0 {
+			demodulatedSignal = append(demodulatedSignal, 1)
+		} else if signal[i] < 0 && signal[i+1] > 0 {
+			demodulatedSignal = append(demodulatedSignal, 0)
+		}
+	}
+	return demodulatedSignal
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: go run manchester.go <modulation_value>")
@@ -42,4 +56,7 @@ func main() {
 	modulatedSignal := manchesterModulation(data, modulationValue)
 
 	fmt.Println("Modulated Signal:", modulatedSignal)
+
+	demodulatedSignal := manchesterDemodulation(modulatedSignal)
+	fmt.Println("Demodulated Signal:", demodulatedSignal)
 }

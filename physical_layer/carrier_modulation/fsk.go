@@ -54,6 +54,37 @@ func plotSignal(signal []float64, A float64) {
 	}
 }
 
+func fskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float64) []int {
+    // Calculate number of bits based on signal length (100 samples per bit)
+    numBits := len(modulatedSignal) / 100
+    demodulatedBits := make([]int, numBits)
+    
+    // Process each bit period
+    for i := 0; i < numBits; i++ {
+        // Calculate correlation with both frequencies
+        corr1 := 0.0
+        corr2 := 0.0
+        
+        // Process each sample in the bit period
+        for j := 0; j < 100; j++ {
+            t := float64(j) / 100
+            // Correlate with both frequency templates
+            sample := modulatedSignal[i*100+j]
+            corr1 += sample * math.Sin(2*math.Pi*f1*t)
+            corr2 += sample * math.Sin(2*math.Pi*f2*t)
+        }
+        
+        // Decision: if correlation with f1 is stronger, bit is 1
+        if math.Abs(corr1) > math.Abs(corr2) {
+            demodulatedBits[i] = 1
+        } else {
+            demodulatedBits[i] = 0
+        }
+    }
+    
+    return demodulatedBits
+}
+
 func main() {
 	fmt.Println(os.Args)
 	if len(os.Args) < 4 {
@@ -84,4 +115,7 @@ func main() {
 	modulatedSignal := fskModulation(amplitude, frequency1, frequency2, data)
 
 	fmt.Println("Modulated Signal:", modulatedSignal)
+
+	demodulatedSignal := fskDemodulation(modulatedSignal, amplitude, frequency1, frequency2)
+	fmt.Println("Demodulated Signal:", demodulatedSignal)
 }

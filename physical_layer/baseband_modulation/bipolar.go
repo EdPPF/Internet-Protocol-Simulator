@@ -25,6 +25,19 @@ func bipolarModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
+func bipolarDemodulation(signal []float64) []int {
+	// Placeholder for demodulation logic
+	var demodulatedSignal []int
+	for _, value := range signal {
+		if value != 0 {
+			demodulatedSignal = append(demodulatedSignal, 1)
+		} else {
+			demodulatedSignal = append(demodulatedSignal, 0)
+		}
+	}
+	return demodulatedSignal
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: go run bipolar.go <modulation_value>")
@@ -42,4 +55,7 @@ func main() {
 	modulatedSignal := bipolarModulation(data, modulationValue)
 
 	fmt.Println("Modulated Signal:", modulatedSignal)
+
+	demodulatedSignal := bipolarDemodulation(modulatedSignal)
+	fmt.Println("Demodulated Signal:", demodulatedSignal)
 }
