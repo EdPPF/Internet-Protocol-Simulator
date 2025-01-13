@@ -1,10 +1,10 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+// import (
+// 	"fmt"
+// 	"os"
+// 	"strconv"
+// )
 
 // polarNRZModulation applies polar NRZ modulation to the input data.
 func polarNRZModulation(data []int, v float64) []float64 {
@@ -33,24 +33,24 @@ func polarNRZDemodulation(signal []float64) []int {
 	return demodulatedSignal
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run nrz_polar.go <modulation_value>")
-		return
-	}
+// func main() {
+// 	if len(os.Args) < 2 {
+// 		fmt.Println("Usage: go run nrz_polar.go <modulation_value>")
+// 		return
+// 	}
 
-	modulationValue, err := strconv.ParseFloat(os.Args[1], 64)
-	if err != nil {
-		fmt.Println("Invalid modulation value. Please provide a valid number.")
-		return
-	}
+// 	modulationValue, err := strconv.ParseFloat(os.Args[1], 64)
+// 	if err != nil {
+// 		fmt.Println("Invalid modulation value. Please provide a valid number.")
+// 		return
+// 	}
 
-	// Example input data
-	data := []int{1, 0, 1, 1, 0}
-	modulatedSignal := polarNRZModulation(data, modulationValue)
+// 	// Example input data
+// 	data := []int{1, 0, 1, 1, 0}
+// 	modulatedSignal := polarNRZModulation(data, modulationValue)
 
-	fmt.Println("Modulated Signal:", modulatedSignal)
+// 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-	demodulatedSignal := polarNRZDemodulation(modulatedSignal)
-	fmt.Println("Demodulated Signal:", demodulatedSignal)
-}
+// 	demodulatedSignal := polarNRZDemodulation(modulatedSignal)
+// 	fmt.Println("Demodulated Signal:", demodulatedSignal)
+// }
