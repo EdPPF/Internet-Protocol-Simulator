@@ -77,3 +77,7 @@ IP_sim/
 1.3    - Camada de enlace - protocolos de enquadramento de dados
 1.4    - Camada de enlace - protocolos de detecção de erros
 1.5    - Camada de enlace - protocolos de correção de erros
+
+## Opçções de bibliotecas para GUI
+https://github.com/mattn/go-gtk
+https://github.com/therecipe/qt
