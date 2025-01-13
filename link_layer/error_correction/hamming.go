@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-// HammingEncode encodes the given data using Hamming(7,4) code
+// HammingEncode encodes the given data using Hamming(7,3) code
 func HammingEncode(data []int) []int {
 	m := len(data) // Número de bits na mensagem original
 	r := calculateRedundantBits(m)
@@ -90,19 +90,21 @@ func isPowerOfTwo(n int) bool {
 
 func main() {
 	// Example usage
-	data := []int{1, 0, 1, 1} // 4 data bits
+	// data := []int{1, 0, 1, 1} // 4 data bits
+	data := []int{1, 1, 0, 1, 0, 0, 1} // 7 data bits
 	fmt.Println("Original Data:", data)
 
 	// Encode data
-	encoded := HammingEncode(data)
+	encoded := HammingEncode(data) // 01101011001
 	fmt.Println("Encoded Data:", encoded)
 
 	// Introduce an error for testing
-	encoded[3] ^= 1 // Flip a bit
+	encoded[4] ^= 1 // Flip a bit -> 01100011001
 	fmt.Println("Received Data with Error:", encoded)
 
 	// Decode data
 	decoded, syndrome := HammingDecode(encoded)
+	fmt.Println("Síndrome:", syndrome)
 	fmt.Println("Decoded Data:", decoded)
 	if syndrome != 0 {
 		fmt.Printf("Error detected and corrected at position: %d\n", syndrome)
