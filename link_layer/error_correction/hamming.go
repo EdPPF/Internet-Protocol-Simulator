@@ -49,7 +49,7 @@ func HammingDecode(received []int) ([]int, int) {
 
 	// Corrige o erro, se houver
 	if syndrome != 0 && syndrome <= n {
-		received[syndrome-1] ^= 1 // Flip the erroneous bit
+		received[syndrome] ^= 1 // Flip the erroneous bit
 	}
 
 	// Extrai os bits de dados da mensagem recebida
