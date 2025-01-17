@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-    "errors"
+   	"errors"
 )
 
 func char_count_client(data []int) []int {
