@@ -1,4 +1,7 @@
-package communication
+package client
+
+// Manages socket communication.
+// Sends the encoded message to the server and optionally waits for an acknowledgment.
 
 import (
 	"IP_sim/common"
