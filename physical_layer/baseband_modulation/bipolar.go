@@ -1,10 +1,10 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+// import (
+// 	"fmt"
+// 	"os"
+// 	"strconv"
+// )
 
 func bipolarModulation(data []int, v float64) []float64 {
 	// Placeholder for modulation logic
@@ -17,7 +17,7 @@ func bipolarModulation(data []int, v float64) []float64 {
 			} else {
 				modulatedSignal = append(modulatedSignal, v)
 			}
-			lastBit = -1*lastBit
+			lastBit = -1 * lastBit
 		} else {
 			modulatedSignal = append(modulatedSignal, 0)
 		}
@@ -38,24 +38,24 @@ func bipolarDemodulation(signal []float64) []int {
 	return demodulatedSignal
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run bipolar.go <modulation_value>")
-		return
-	}
+// func main() {
+// 	if len(os.Args) < 2 {
+// 		fmt.Println("Usage: go run bipolar.go <modulation_value>")
+// 		return
+// 	}
 
-	modulationValue, err := strconv.ParseFloat(os.Args[1], 64)
-	if err != nil {
-		fmt.Println("Invalid modulation value. Please provide a valid number.")
-		return
-	}
+// 	modulationValue, err := strconv.ParseFloat(os.Args[1], 64)
+// 	if err != nil {
+// 		fmt.Println("Invalid modulation value. Please provide a valid number.")
+// 		return
+// 	}
 
-	// Example input data
-	data := []int{1, 0, 1, 1, 0}
-	modulatedSignal := bipolarModulation(data, modulationValue)
+// 	// Example input data
+// 	data := []int{1, 0, 1, 1, 0}
+// 	modulatedSignal := bipolarModulation(data, modulationValue)
 
-	fmt.Println("Modulated Signal:", modulatedSignal)
+// 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-	demodulatedSignal := bipolarDemodulation(modulatedSignal)
-	fmt.Println("Demodulated Signal:", demodulatedSignal)
-}
+// 	demodulatedSignal := bipolarDemodulation(modulatedSignal)
+// 	fmt.Println("Demodulated Signal:", demodulatedSignal)
+// }

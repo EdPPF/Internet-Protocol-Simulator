@@ -1,10 +1,10 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+// import (
+// 	"fmt"
+// 	"os"
+// 	"strconv"
+// )
 
 func manchesterModulation(data []int, v float64) []float64 {
 	// Placeholder for modulation logic
@@ -29,7 +29,7 @@ func manchesterDemodulation(signal []float64) []int {
 	// Placeholder for demodulation logic
 	var signalLen = len(signal)
 	var demodulatedSignal []int
-	for i := 0; i < signalLen; i+= 2 {
+	for i := 0; i < signalLen; i += 2 {
 		if signal[i] > 0 && signal[i+1] < 0 {
 			demodulatedSignal = append(demodulatedSignal, 1)
 		} else if signal[i] < 0 && signal[i+1] > 0 {
@@ -39,24 +39,24 @@ func manchesterDemodulation(signal []float64) []int {
 	return demodulatedSignal
 }
 
-func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run manchester.go <modulation_value>")
-		return
-	}
+// func main() {
+// 	if len(os.Args) < 2 {
+// 		fmt.Println("Usage: go run manchester.go <modulation_value>")
+// 		return
+// 	}
 
-	modulationValue, err := strconv.ParseFloat(os.Args[1], 64)
-	if err != nil {
-		fmt.Println("Invalid modulation value. Please provide a valid number.")
-		return
-	}
+// 	modulationValue, err := strconv.ParseFloat(os.Args[1], 64)
+// 	if err != nil {
+// 		fmt.Println("Invalid modulation value. Please provide a valid number.")
+// 		return
+// 	}
 
-	// Example input data
-	data := []int{1, 0, 1, 1, 0}
-	modulatedSignal := manchesterModulation(data, modulationValue)
+// 	// Example input data
+// 	data := []int{1, 0, 1, 1, 0}
+// 	modulatedSignal := manchesterModulation(data, modulationValue)
 
-	fmt.Println("Modulated Signal:", modulatedSignal)
+// 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-	demodulatedSignal := manchesterDemodulation(modulatedSignal)
-	fmt.Println("Demodulated Signal:", demodulatedSignal)
-}
+// 	demodulatedSignal := manchesterDemodulation(modulatedSignal)
+// 	fmt.Println("Demodulated Signal:", demodulatedSignal)
+// }

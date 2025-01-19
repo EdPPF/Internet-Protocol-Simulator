@@ -1,14 +1,15 @@
 package main
 
 import (
-	"os"
-	"fmt"
-	"strconv"
-	"math"
-	"gonum.org/v1/plot"
-	"gonum.org/v1/plot/vg"
-	"gonum.org/v1/plot/plotter"
+	// "os"
+	// "fmt"
+	// "strconv"
 	"log"
+	"math"
+
+	"gonum.org/v1/plot"
+	"gonum.org/v1/plot/plotter"
+	"gonum.org/v1/plot/vg"
 )
 
 func askModulation(A float64, F float64, bitStream []int) []float64 {
@@ -17,7 +18,7 @@ func askModulation(A float64, F float64, bitStream []int) []float64 {
 	for i := 0; i < sigSize; i++ {
 		if bitStream[i] == 1 {
 			for j := 0; j < 100; j++ {
-				modulatedSignal[i*100+j] = A * math.Sin(2 * math.Pi * F * float64(j) / 100)
+				modulatedSignal[i*100+j] = A * math.Sin(2*math.Pi*F*float64(j)/100)
 			}
 		} else {
 			for j := 0; j < 100; j++ {
@@ -56,7 +57,7 @@ func plotSignal(signal []float64, A float64) {
 func askDemodulation(signal []float64) []int {
 	var signalLen = len(signal)
 	var demodulatedSignal []int
-	for i := 0; i < signalLen; i+= 100 {
+	for i := 0; i < signalLen; i += 100 {
 		foundNonZero := false
 		for _, v := range signal[i : i+100] {
 			if v != 0 {
@@ -73,30 +74,30 @@ func askDemodulation(signal []float64) []int {
 	return demodulatedSignal
 }
 
-func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("Usage: go run ask.go <amplitude> <frequency>")
-		return
-	}
+// func main() {
+// 	if len(os.Args) < 3 {
+// 		fmt.Println("Usage: go run ask.go <amplitude> <frequency>")
+// 		return
+// 	}
 
-	amplitude, err := strconv.ParseFloat(os.Args[1], 64)
-	if err != nil {
-		fmt.Println("Invalid amplitude. Please provide a valid number.")
-		return
-	}
+// 	amplitude, err := strconv.ParseFloat(os.Args[1], 64)
+// 	if err != nil {
+// 		fmt.Println("Invalid amplitude. Please provide a valid number.")
+// 		return
+// 	}
 
-	frequency, err := strconv.ParseFloat(os.Args[2], 64)
-	if err != nil {
-		fmt.Println("Invalid frequency. Please provide a valid number.")
-		return
-	}
+// 	frequency, err := strconv.ParseFloat(os.Args[2], 64)
+// 	if err != nil {
+// 		fmt.Println("Invalid frequency. Please provide a valid number.")
+// 		return
+// 	}
 
-	// Example input data
-	data := []int{1, 0, 1, 1, 0}
-	modulatedSignal := askModulation(amplitude, frequency, data)
+// 	// Example input data
+// 	data := []int{1, 0, 1, 1, 0}
+// 	modulatedSignal := askModulation(amplitude, frequency, data)
 
-	fmt.Println("Modulated Signal:", modulatedSignal)
+// 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-	demodulatedSignal := askDemodulation(modulatedSignal)
-	fmt.Println("Demodulated Signal:", demodulatedSignal)
-}
+// 	demodulatedSignal := askDemodulation(modulatedSignal)
+// 	fmt.Println("Demodulated Signal:", demodulatedSignal)
+// }
