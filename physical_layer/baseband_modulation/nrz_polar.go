@@ -1,10 +1,8 @@
-package main
+package baseband_modulation
 
-// import (
-// 	"fmt"
-// 	"os"
-// 	"strconv"
-// )
+import (
+	"fmt"
+)
 
 // polarNRZModulation applies polar NRZ modulation to the input data.
 func polarNRZModulation(data []int, v float64) []float64 {
@@ -20,6 +18,19 @@ func polarNRZModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
+func PolarNRZModulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		Data []int
+		V    float64
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for polarNRZModulation")
+	}
+
+	result := polarNRZModulation(params.Data, params.V)
+	return result, nil
+}
+
 func polarNRZDemodulation(signal []float64) []int {
 	// Placeholder for demodulation logic
 	var demodulatedSignal []int
@@ -31,6 +42,18 @@ func polarNRZDemodulation(signal []float64) []int {
 		}
 	}
 	return demodulatedSignal
+}
+
+func PolarNRZDemodulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		Data []float64
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for polarNRZDemodulation")
+	}
+
+	result := polarNRZDemodulation(params.Data)
+	return result, nil
 }
 
 // func main() {

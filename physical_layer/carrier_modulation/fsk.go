@@ -1,9 +1,7 @@
-package main
+package carrier_modulation
 
 import (
-	// "os"
-	// "fmt"
-	// "strconv"
+	"fmt"
 	"log"
 	"math"
 
@@ -27,8 +25,24 @@ func fskModulation(A float64, f1 float64, f2 float64, bitStream []int) []float64
 		}
 	}
 
-	plotSignal(modulatedSignal, A)
+	// plotSignal(modulatedSignal, A)
+	fsk_plotSignal(modulatedSignal, A)
 	return modulatedSignal
+}
+
+func FskModulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		A         float64
+		F1        float64
+		F2        float64
+		BitStream []int
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for fskModulation")
+	}
+
+	result := fskModulation(params.A, params.F1, params.F2, params.BitStream)
+	return result, nil
 }
 
 func fsk_plotSignal(signal []float64, A float64) {
@@ -84,6 +98,21 @@ func fskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float6
 	}
 
 	return demodulatedBits
+}
+
+func FskDemodulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		ModulatedSignal []float64
+		A               float64
+		F1              float64
+		F2              float64
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for fskDemodulation")
+	}
+
+	result := fskDemodulation(params.ModulatedSignal, params.A, params.F1, params.F2)
+	return result, nil
 }
 
 // func main() {
