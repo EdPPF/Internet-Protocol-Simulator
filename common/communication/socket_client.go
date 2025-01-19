@@ -1,12 +1,12 @@
 package communication
 
 import (
+	"IP_sim/common"
 	"bufio"
 	"fmt"
 	"net"
 	"os"
 	"sync"
-	"IP_sim/common"
 )
 
 func StartClient(wg *sync.WaitGroup, message string) {
@@ -15,7 +15,7 @@ func StartClient(wg *sync.WaitGroup, message string) {
 	defer wg.Done()
 
 	// Connect to server
-	conn, err := net.Dial(common.Type, common.Host + ":" + common.Port)
+	conn, err := net.Dial(common.Type, common.Host+":"+common.Port)
 	if err != nil {
 		fmt.Println("Error connecting:", err)
 		return

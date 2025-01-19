@@ -1,7 +1,8 @@
 package common
 
 const (
-	Host = "localhost"
+	// 0.0.0.0 listens on all network interfaces
+	Host = "0.0.0.0" // "localhost"
 	Port = "8080"
 	Type = "tcp"
 	// IEEE 802 CRC-32 polynomial
