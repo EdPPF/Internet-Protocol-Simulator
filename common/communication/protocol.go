@@ -3,6 +3,7 @@ package communication
 import (
 	"IP_sim/link_layer/error_correction"
 	"IP_sim/link_layer/error_detection"
+	"IP_sim/link_layer/framing"
 	"IP_sim/physical_layer/baseband_modulation"
 	"IP_sim/physical_layer/carrier_modulation"
 )
@@ -31,4 +32,6 @@ var SupportedProtocols = map[string]Protocol{
 	"ASK":   Protocol{Name: "ASK", Apply: carrier_modulation.AskModulationWrapper, Reverse: carrier_modulation.AskDemodulationWrapper},
 	"FSK":   Protocol{Name: "FSK", Apply: carrier_modulation.FskModulationWrapper, Reverse: carrier_modulation.FskDemodulationWrapper},
 	"QAM-8": Protocol{Name: "QAM-8", Apply: carrier_modulation.Qam8ModulationWrapper, Reverse: carrier_modulation.Qam8DemodulationWrapper},
+	// Framing
+	"CharCount": Protocol{Name: "CharCount", Apply: framing.EncodeCharCountWrapper, Reverse: framing.DecodeCharCountWrapper},
 }
