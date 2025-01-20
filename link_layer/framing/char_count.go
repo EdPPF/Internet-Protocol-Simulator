@@ -1,47 +1,40 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-   	"errors"
 )
 
-func char_count_client(data []int) []int {
-    // Rewrite the data array with its size at the first position
-    var x int
-    x = len(data)
-    data = append(data, x)
-    for i:= len(data)-1; i>= 1; i--{
-        data[i] = data[i-1]
-    }
-    data[0] = x
+// Escreve um cabeçalho de tamanho no início do array de dados.
+func CharCountEncode(data []int) []int {
+	x := len(data)
+	data = append([]int{x}, data...)
 	return data
 }
 
-func char_count_server(data []int) ([]int, error) {
-    // Rewrite the data array removing its size from the first position
-    if (data[0] == len(data)-1){
-        for i:= 0; i < len(data)-1; i++{
-            data[i] = data[i+1]
-        }
-    } else {
-        return data, errors.New("Transmission failed")
-
-    }
-    data = data[:len(data)-1]
-	return data, nil
+// Remove o cabeçalho de tamanho do array de dados.
+func CharCountDecode(data []int) ([]int, error) {
+	if data[0] == len(data)-1 {
+		return append(data[:0], data[0+1:]...), nil
+	} else {
+		return data, errors.New("transmission failed")
+	}
 }
 
 func main() {
 
 	// Example input data
 	data := []int{1, 0, 1, 1, 0}
+	fmt.Println("Original data:", data)
 
-	signal_client := char_count_client(data)
-	fmt.Println("Client signal:", signal_client)
+	encoded := CharCountEncode(data)
+	fmt.Println("Encoded with char. count:", encoded)
+	fmt.Println("Data header (size):", encoded[0])
 
-	signal_server, err := char_count_server(signal_client)
-    if err != nil {
-	    fmt.Println(err)
-    }
-    fmt.Println("Server signal:", signal_server)
+	decoded, err := CharCountDecode(encoded)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println("Decoded data:", decoded)
+	}
 }
