@@ -1,10 +1,13 @@
-package communication
+package server
+
+// Manages socket communication.
+// Receives messages from the client and passes them to protocol_manager.go.
 
 import (
+	"IP_sim/common"
 	"fmt"
 	"net"
 	"sync"
-	"IP_sim/common"
 )
 
 func StartServer(wg *sync.WaitGroup) {
@@ -12,7 +15,7 @@ func StartServer(wg *sync.WaitGroup) {
 
 	defer wg.Done()
 
-	listener, err := net.Listen(common.Type, common.Host + ":" + common.Port)
+	listener, err := net.Listen(common.Type, common.Host+":"+common.Port)
 	if err != nil {
 		fmt.Println("Error listening:", err)
 		return

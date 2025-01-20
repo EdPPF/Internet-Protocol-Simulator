@@ -1,4 +1,4 @@
-package main
+package error_correction
 
 import (
 	"fmt"
@@ -32,6 +32,16 @@ func HammingEncode(data []int) []int {
 	return encoded
 }
 
+func HammingEncodeWrapper(input interface{}) (interface{}, error) {
+	data, ok := input.([]int)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for HammingEncode")
+	}
+
+	result := HammingEncode(data)
+	return result, nil
+}
+
 // Decodifica a mensagem recebida e corrige um (1, uno, one, 一) erro, se houver
 func HammingDecode(received []int) ([]int, int) {
 	n := len(received)
@@ -63,6 +73,19 @@ func HammingDecode(received []int) ([]int, int) {
 	return data, syndrome
 }
 
+func HammingDecodeWrapper(input interface{}) (interface{}, error) {
+	received, ok := input.([]int)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for HammingDecode")
+	}
+
+	data, syndrome := HammingDecode(received)
+	return struct {
+		Data     []int
+		Syndrome int
+	}{Data: data, Syndrome: syndrome}, nil
+}
+
 // Determina o número de bits de paridade de acordo com a regra: 2^r >= m+r+1
 func calculateRedundantBits(dataBits int) int {
 	for r := 0; ; r++ {
@@ -89,6 +112,7 @@ func isPowerOfTwo(n int) bool {
 	return n > 0 && (n&(n-1)) == 0
 }
 
+/*
 func main() {
 	// data := []int{1, 1, 0, 1, 0, 0, 1} // Data original
 	data := []int{1, 1, 1, 0, 1, 1}
@@ -114,3 +138,4 @@ func main() {
 		fmt.Println("No error detected.")
 	}
 }
+*/

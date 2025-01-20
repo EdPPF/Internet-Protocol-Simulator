@@ -1,10 +1,8 @@
-package main
+package baseband_modulation
 
-// import (
-// 	"fmt"
-// 	"os"
-// 	"strconv"
-// )
+import (
+	"fmt"
+)
 
 func manchesterModulation(data []int, v float64) []float64 {
 	// Placeholder for modulation logic
@@ -25,6 +23,19 @@ func manchesterModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
+func ManchesterModulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		Data []int
+		V    float64
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for manchesterModulation")
+	}
+
+	result := manchesterModulation(params.Data, params.V)
+	return result, nil
+}
+
 func manchesterDemodulation(signal []float64) []int {
 	// Placeholder for demodulation logic
 	var signalLen = len(signal)
@@ -37,6 +48,18 @@ func manchesterDemodulation(signal []float64) []int {
 		}
 	}
 	return demodulatedSignal
+}
+
+func ManchesterDemodulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		Data []float64
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for manchesterDemodulation")
+	}
+
+	result := manchesterDemodulation(params.Data)
+	return result, nil
 }
 
 // func main() {

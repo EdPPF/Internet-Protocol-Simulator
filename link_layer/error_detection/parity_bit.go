@@ -1,11 +1,9 @@
-package main
+package error_detection
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // Codifica a mensagem recebida utilizando paridade par.
-func encodeParity(data []int) []int {
+func EncodeParity(data []int) []int {
 	parity := 0
 	for _, bit := range data { // range pega o índice e o valor, por isso _
 		parity ^= bit
@@ -13,8 +11,18 @@ func encodeParity(data []int) []int {
 	return append(data, parity)
 }
 
+func EncodeParityWrapper(input interface{}) (interface{}, error) {
+	data, ok := input.([]int)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for EncodeParity")
+	}
+
+	result := EncodeParity(data)
+	return result, nil
+}
+
 // Decodifica a mensagem recebida utilizando paridade par.
-func decodeParity(dataWithParity []int) ([]int, bool) {
+func DecodeParity(dataWithParity []int) ([]int, bool) {
 	// Mensagem vazia
 	if len(dataWithParity) == 0 {
 		return nil, false
@@ -30,6 +38,23 @@ func decodeParity(dataWithParity []int) ([]int, bool) {
 	return dataWithParity[:len(dataWithParity)-1], parity == 0
 }
 
+func DecodeParityWrapper(input interface{}) (interface{}, error) {
+	dataWithParity, ok := input.([]int)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for DecodeParity")
+	}
+
+	data, ok := DecodeParity(dataWithParity)
+	return struct {
+		Data []int
+		Ok   bool
+	}{
+		Data: data,
+		Ok:   ok,
+	}, nil
+}
+
+/*
 func main() {
 	// Data original
 	data := []int{1, 0, 1, 1, 0, 0, 1}
@@ -48,3 +73,4 @@ func main() {
 	decoded, ok = decodeParity(dataWithParity)
 	fmt.Println("Data:", decoded, "Parity check:", ok, "-> ERRO")
 }
+*/
