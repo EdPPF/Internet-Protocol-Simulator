@@ -2,6 +2,7 @@ package framing
 
 import (
 	"IP_sim/common"
+	"IP_sim/common/utils"
 	"bytes"
 	"errors"
 )
@@ -9,7 +10,10 @@ import (
 // Insere bytes ou chars no início e fim do array de dados.
 // Cada quadro começa e termina com um byte especial, chamado de byte de flag.
 // O enquadramento é feitoc por adição de caracteres ASCII.
-func EncodeByteInsert(data []byte) []byte {
+func EncodeByteInsert(msg string) []int {
+	// data := utils.StringToBinary(msg)
+	data := utils.ToBytes(msg)
+
 	var framed bytes.Buffer
 
 	// Adiciona o início do quadro
@@ -26,11 +30,12 @@ func EncodeByteInsert(data []byte) []byte {
 	// Adiciona o fim do quadro
 	framed.WriteByte(common.ETX)
 
-	return framed.Bytes()
+	intFramed := utils.BytesToInt(framed.Bytes())
+	return intFramed
 }
 
 func EncodeByteInsertWrapper(data interface{}) (interface{}, error) {
-	d, ok := data.([]byte)
+	d, ok := data.(string)
 	if !ok {
 		return nil, errors.New("invalid input type for EncodeByteInsert")
 	}

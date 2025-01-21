@@ -1,19 +1,25 @@
 package framing
 
 import (
+	"IP_sim/common/utils"
 	"errors"
 	"fmt"
+	"log"
 )
 
 // Escreve um cabeçalho de tamanho no início do array de dados.
-func EncodeCharCount(data []int) []int {
-	x := len(data)
-	data = append([]int{x}, data...)
-	return data
+func EncodeCharCount(data string) []int {
+	ints, err := utils.ParseBinaryString(data)
+	if err != nil {
+		log.Fatalf("Error parsing binary string: %v", err)
+	}
+	x := len(ints)
+	ints = append([]int{x}, ints...)
+	return ints
 }
 
 func EncodeCharCountWrapper(data interface{}) (interface{}, error) {
-	d, ok := data.([]int)
+	d, ok := data.(string)
 	if !ok {
 		return nil, fmt.Errorf("invalid input type for EncodeCharCount")
 	}
