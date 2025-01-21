@@ -5,35 +5,62 @@ import (
 	"IP_sim/server"
 	"fmt"
 	"os"
-	"sync"
+	"os/exec"
+	"runtime"
 )
 
+func clearScreen() {
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	default:
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+}
+
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Uso: go run main.go [client|server]")
+	clearScreen()
+	fmt.Println("BEM VINDO")
+	fmt.Println("---------------------------------------")
+	fmt.Println("Selecione um modo:")
+	fmt.Println("1. Cliente")
+	fmt.Println("2. Servidor")
+	fmt.Println("3. Sair")
+
+	var choice int
+	fmt.Print("Selecione uma das opções acima (1/2/3): ")
+	_, err := fmt.Scan(&choice)
+	if err != nil {
+		fmt.Println("Escolha inválida. Por favor, selecione um número entre 1, 2 e 3.")
 		return
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(1)
+	switch choice {
+	case 1: // Inicia o cliente
+		fmt.Println("Iniciando cliente...")
+		// err := exec.Command("go", "run", "client/client.go").Run()
+		// if err != nil {
+		// 	fmt.Println("Erro ao iniciar o cliente:", err)
+		// }
+		client.Run()
 
-	switch os.Args[1] {
-	case "client":
-		var message string
-		// Se comando no terminal tiver uma mensagem
-		if len(os.Args) > 2 {
-			message = os.Args[2]
-		} else { // Se a mensagem não for passada no comando
-			fmt.Println("Digite a mensagem para o servidor:")
-			fmt.Scanln(&message)
-		}
-		go client.StartClient(&wg, message)
-	case "server":
-		go server.StartServer(&wg)
+	case 2: // Inicia o servidor
+		fmt.Println("Iniciando servidor...")
+		// err := exec.Command("go", "run", "server/server.go").Run()
+		// if err != nil {
+		// 	fmt.Println("Erro ao iniciar o servidor:", err)
+		// }
+		server.Run()
+
+	case 3: // Sair
+		fmt.Println("Encerrando...")
+		return
+
 	default:
-		fmt.Println("Argumento inválido. Use 'client' ou 'server'.")
-		wg.Done()
+		fmt.Println("Escolha inválida. Por favor, selecione um número entre 1, 2 e 3.")
 	}
-
-	wg.Wait() // Aguarda todas as goroutines finalizarem
 }
