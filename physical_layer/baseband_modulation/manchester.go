@@ -1,4 +1,4 @@
-package main
+package baseband_modulation
 
 // import (
 // 	"fmt"
@@ -6,7 +6,7 @@ package main
 // 	"strconv"
 // )
 
-func manchesterModulation(data []int, v float64) []float64 {
+func ManchesterModulation(data []int, v float64) []float64 {
 	// Placeholder for modulation logic
 	var modulatedSignal []float64
 	for _, bit := range data {
@@ -25,7 +25,7 @@ func manchesterModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
-func manchesterDemodulation(signal []float64) []int {
+func ManchesterDemodulation(signal []float64) []int {
 	// Placeholder for demodulation logic
 	var signalLen = len(signal)
 	var demodulatedSignal []int
@@ -53,10 +53,10 @@ func manchesterDemodulation(signal []float64) []int {
 
 // 	// Example input data
 // 	data := []int{1, 0, 1, 1, 0}
-// 	modulatedSignal := manchesterModulation(data, modulationValue)
+// 	modulatedSignal := ManchesterModulation(data, modulationValue)
 
 // 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-// 	demodulatedSignal := manchesterDemodulation(modulatedSignal)
+// 	demodulatedSignal := ManchesterDemodulation(modulatedSignal)
 // 	fmt.Println("Demodulated Signal:", demodulatedSignal)
 // }

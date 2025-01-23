@@ -1,4 +1,4 @@
-package main
+package baseband_modulation
 
 // import (
 // 	"fmt"
@@ -6,8 +6,7 @@ package main
 // 	"strconv"
 // )
 
-func bipolarModulation(data []int, v float64) []float64 {
-	// Placeholder for modulation logic
+func BipolarModulation(data []int, v float64) []float64 {
 	var modulatedSignal []float64
 	var lastBit float64 = -v
 	for _, bit := range data {
@@ -25,8 +24,7 @@ func bipolarModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
-func bipolarDemodulation(signal []float64) []int {
-	// Placeholder for demodulation logic
+func BipolarDemodulation(signal []float64) []int {
 	var demodulatedSignal []int
 	for _, value := range signal {
 		if value != 0 {
@@ -52,10 +50,10 @@ func bipolarDemodulation(signal []float64) []int {
 
 // 	// Example input data
 // 	data := []int{1, 0, 1, 1, 0}
-// 	modulatedSignal := bipolarModulation(data, modulationValue)
+// 	modulatedSignal := BipolarModulation(data, modulationValue)
 
 // 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-// 	demodulatedSignal := bipolarDemodulation(modulatedSignal)
+// 	demodulatedSignal := BipolarDemodulation(modulatedSignal)
 // 	fmt.Println("Demodulated Signal:", demodulatedSignal)
 // }

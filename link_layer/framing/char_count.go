@@ -1,4 +1,4 @@
-package main
+package framing
 
 import (
 	"errors"
@@ -24,7 +24,7 @@ func CharCountDecode(data []int) ([]int, error) {
 func main() {
 
 	// Example input data
-	data := []int{1, 0, 1, 1, 0}
+	data := []int{0, 1, 1, 0, 0, 0, 0, 1} // "a"
 	fmt.Println("Original data:", data)
 
 	encoded := CharCountEncode(data)

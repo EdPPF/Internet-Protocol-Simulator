@@ -1,4 +1,4 @@
-package main
+package carrier_modulation
 
 import (
 	// "os"
@@ -12,7 +12,7 @@ import (
 	"gonum.org/v1/plot/vg"
 )
 
-func fskModulation(A float64, f1 float64, f2 float64, bitStream []int) []float64 {
+func FskModulation(A float64, f1 float64, f2 float64, bitStream []int) []float64 {
 	var sigSize = len(bitStream)
 	var modulatedSignal = make([]float64, sigSize*100)
 	for i := 0; i < sigSize; i++ {
@@ -27,7 +27,7 @@ func fskModulation(A float64, f1 float64, f2 float64, bitStream []int) []float64
 		}
 	}
 
-	plotSignal(modulatedSignal, A)
+	fsk_plotSignal(modulatedSignal, A)
 	return modulatedSignal
 }
 
@@ -55,7 +55,7 @@ func fsk_plotSignal(signal []float64, A float64) {
 	}
 }
 
-func fskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float64) []int {
+func FskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float64) []int {
 	// Calculate number of bits based on signal length (100 samples per bit)
 	numBits := len(modulatedSignal) / 100
 	demodulatedBits := make([]int, numBits)
@@ -113,10 +113,10 @@ func fskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float6
 
 // 	// Example input data
 // 	data := []int{1, 0, 1, 1, 0}
-// 	modulatedSignal := fskModulation(amplitude, frequency1, frequency2, data)
+// 	modulatedSignal := FskModulation(amplitude, frequency1, frequency2, data)
 
 // 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-// 	demodulatedSignal := fskDemodulation(modulatedSignal, amplitude, frequency1, frequency2)
+// 	demodulatedSignal := FskDemodulation(modulatedSignal, amplitude, frequency1, frequency2)
 // 	fmt.Println("Demodulated Signal:", demodulatedSignal)
 // }

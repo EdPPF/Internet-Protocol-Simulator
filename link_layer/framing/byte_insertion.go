@@ -1,13 +1,12 @@
-package main
+package framing
 
 import (
 	"IP_sim/common"
-	"IP_sim/common/utils"
 	"bytes"
 	"errors"
-	"fmt"
 )
 
+/*
 func main() {
 	message := "Hello, \x02World!"
 	fmt.Println("Original Data (string):", message)
@@ -27,6 +26,7 @@ func main() {
 
 	fmt.Println("Unframed Data         :", utils.ToString(unframed))
 }
+*/
 
 // Insere bytes ou chars no início e fim do array de dados.
 // Cada quadro começa e termina com um byte especial, chamado de byte de flag.

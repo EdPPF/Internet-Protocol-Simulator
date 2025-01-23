@@ -1,4 +1,4 @@
-package main
+package baseband_modulation
 
 // import (
 // 	"fmt"
@@ -6,8 +6,8 @@ package main
 // 	"strconv"
 // )
 
-// polarNRZModulation applies polar NRZ modulation to the input data.
-func polarNRZModulation(data []int, v float64) []float64 {
+// PolarNRZModulation applies polar NRZ modulation to the input data.
+func PolarNRZModulation(data []int, v float64) []float64 {
 	// Placeholder for modulation logic
 	var modulatedSignal []float64
 	for _, bit := range data {
@@ -20,7 +20,7 @@ func polarNRZModulation(data []int, v float64) []float64 {
 	return modulatedSignal
 }
 
-func polarNRZDemodulation(signal []float64) []int {
+func PolarNRZDemodulation(signal []float64) []int {
 	// Placeholder for demodulation logic
 	var demodulatedSignal []int
 	for _, value := range signal {
@@ -47,10 +47,10 @@ func polarNRZDemodulation(signal []float64) []int {
 
 // 	// Example input data
 // 	data := []int{1, 0, 1, 1, 0}
-// 	modulatedSignal := polarNRZModulation(data, modulationValue)
+// 	modulatedSignal := PolarNRZModulation(data, modulationValue)
 
 // 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-// 	demodulatedSignal := polarNRZDemodulation(modulatedSignal)
+// 	demodulatedSignal := PolarNRZDemodulation(modulatedSignal)
 // 	fmt.Println("Demodulated Signal:", demodulatedSignal)
 // }

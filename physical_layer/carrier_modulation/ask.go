@@ -1,4 +1,4 @@
-package main
+package carrier_modulation
 
 import (
 	// "os"
@@ -12,7 +12,7 @@ import (
 	"gonum.org/v1/plot/vg"
 )
 
-func askModulation(A float64, F float64, bitStream []int) []float64 {
+func AskModulation(A float64, F float64, bitStream []int) []float64 {
 	var sigSize = len(bitStream)
 	var modulatedSignal = make([]float64, sigSize*100)
 	for i := 0; i < sigSize; i++ {
@@ -54,7 +54,7 @@ func plotSignal(signal []float64, A float64) {
 	}
 }
 
-func askDemodulation(signal []float64) []int {
+func AskDemodulation(signal []float64) []int {
 	var signalLen = len(signal)
 	var demodulatedSignal []int
 	for i := 0; i < signalLen; i += 100 {
@@ -94,10 +94,10 @@ func askDemodulation(signal []float64) []int {
 
 // 	// Example input data
 // 	data := []int{1, 0, 1, 1, 0}
-// 	modulatedSignal := askModulation(amplitude, frequency, data)
+// 	modulatedSignal := AskModulation(amplitude, frequency, data)
 
 // 	fmt.Println("Modulated Signal:", modulatedSignal)
 
-// 	demodulatedSignal := askDemodulation(modulatedSignal)
+// 	demodulatedSignal := AskDemodulation(modulatedSignal)
 // 	fmt.Println("Demodulated Signal:", demodulatedSignal)
 // }
