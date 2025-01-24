@@ -7,37 +7,54 @@ import (
 	"net"
 )
 
-// Recieve recebe mensage do Cliente e envia um ack de confirmação
-func Recieve() {
-	ln, err := net.Listen(common.Type, common.Host+":"+common.Port)
-	if err != nil {
-		fmt.Println("Error listening:", err.Error())
-		return
-	}
-	defer ln.Close()
+type Payload struct {
+	ModulatedSignal []float64
+	FramingFlag     string
+	CarrierFlag     string
+	BasebandFlag    string
+}
 
-	conn, err := ln.Accept()
-	if err != nil {
-		fmt.Println("Error accepting:", err.Error())
-		return
-	}
+func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
-	var message []float64
+	// Recebe a mensagem do cliente
 	decoder := gob.NewDecoder(conn)
-	err = decoder.Decode(&message)
-	if err != nil {
-		fmt.Println("Error decoding:", err.Error())
+	var payload Payload
+	if err := decoder.Decode(&payload); err != nil {
+		fmt.Println("Erro ao receber a mensagem:", err)
 		return
 	}
+	fmt.Printf("Mensagem recebida: %v\n", payload.ModulatedSignal)
 
-	fmt.Println("Received message:", message)
+	// TODO: Implementar a lógica de demodulação
 
-	ack := "Message received"
+	// Envia um ack para o cliente
+	ack := "Mensagem recebida."
 	encoder := gob.NewEncoder(conn)
-	err = encoder.Encode(ack)
-	if err != nil {
-		fmt.Println("Error encoding ack:", err.Error())
+	if err := encoder.Encode(ack); err != nil {
+		fmt.Println("Erro ao enviar o ack:", err)
 		return
+	}
+	fmt.Println("Ack enviado.")
+}
+
+func Start() {
+	// Inicia o servidor
+	listener, err := net.Listen(common.Type, common.Host+":"+common.Port)
+	if err != nil {
+		fmt.Println("Erro ao iniciar o servidor:", err)
+		return
+	}
+	defer listener.Close()
+
+	fmt.Println("Servidor iniciado em " + common.Host + ":" + common.Port + ". Aguardando conexões...")
+
+	for {
+		conn, err := listener.Accept()
+		if err != nil {
+			fmt.Println("Erro ao aceitar a conexão:", err)
+			continue
+		}
+		go handleConnection(conn)
 	}
 }

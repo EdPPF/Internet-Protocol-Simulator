@@ -1,5 +1,5 @@
 package server
 
 func Run() {
-	Recieve()
+	Start()
 }

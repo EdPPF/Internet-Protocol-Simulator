@@ -16,7 +16,6 @@ var CarrierModulation = []string{"ASK", "FSK", "QAM 8"}
 var BasebandModulation = []string{"NRZ Polar", "Bipolar", "Manchester"}
 
 func Run() {
-	// Imprime uma mensagem bonitinha na tela
 	fmt.Println("Cliente iniciado.")
 
 	// User input = mensagem a ser enviada ao server
@@ -34,6 +33,7 @@ func Run() {
 
 	// User input: Seleciona protocolo de enquadramento (byte_insertion ou char_count)
 	var frameMethod int
+	var framingFlag string // Flag para indicar qual protocolo de enquadramento foi selecionado
 	fmt.Println("Selecione um protocolo de enquadramento:")
 	for {
 		for i, protocol := range FramingProtocols {
@@ -47,7 +47,8 @@ func Run() {
 	}
 	// Chama as funções de enquadramento
 	switch frameMethod {
-	case 1:
+	case 1: // Byte Insertion
+		framingFlag = "Byte Insertion"
 		fmt.Println("Aplicando Byte Insertion...")
 		byts := utils.ToBytes(message)
 		fmt.Println("Original Data (string):", message)
@@ -55,7 +56,8 @@ func Run() {
 		framed := framing.EncodeByteInsert(byts)
 		fmt.Println("Framed Data (bytes )  :", framed)
 		fmt.Printf("Framed Data (string)  : %q\n", utils.ToString(framed)) // %q permite que os bytes de escape sejam exibidos no print
-	case 2:
+	case 2: // Char Count
+		framingFlag = "Char Count"
 		fmt.Println("Aplicando Char Count...")
 		fmt.Println("Original Data:", data)
 		framed := framing.CharCountEncode(data)
@@ -67,6 +69,7 @@ func Run() {
 
 	// User input: Seleciona modulação digital (carrier modulation)
 	var carrier int
+	var carrierFlag string // Flag para indicar qual método de modulação por portadora foi selecionado
 	fmt.Println("Selecione um método de modulação por portadora:")
 	for {
 		for i, mod := range CarrierModulation {
@@ -81,6 +84,7 @@ func Run() {
 	// Chama as funções de modulação por portadora
 	switch carrier {
 	case 1: // ASK
+		carrierFlag = "ASK"
 		var A, F float64
 		fmt.Println("Digite o valor de Amplitude:")
 		fmt.Scan(&A)
@@ -91,6 +95,7 @@ func Run() {
 		fmt.Println("Modulated Data:", modulated)
 
 	case 2: // FSK
+		carrierFlag = "FSK"
 		var A, F1, F2 float64
 		fmt.Println("Digite o valor de Amplitude:")
 		fmt.Scan(&A)
@@ -103,6 +108,7 @@ func Run() {
 		fmt.Println("Modulated Data:", modulated)
 
 	case 3: // QAM 8
+		carrierFlag = "QAM 8"
 		var A, F float64
 		fmt.Println("Digite o valor de Amplitude:")
 		fmt.Scan(&A)
@@ -118,6 +124,7 @@ func Run() {
 
 	// User input: Seleciona modulação analógica (baseband modulation)
 	var baseband int
+	var basebandFlag string // Flag para indicar qual método de modulação em banda base foi selecionado
 	fmt.Println("Selecione um método de modulação em banda base:")
 	for {
 		for i, mod := range BasebandModulation {
@@ -136,22 +143,28 @@ func Run() {
 	var basebanded []float64
 	switch baseband {
 	case 1: // NRZ Polar
+		basebandFlag = "NRZ Polar"
 		fmt.Println("Aplicando NRZ Polar...")
 		basebanded = baseband_modulation.PolarNRZModulation(data, V)
 		fmt.Println("Basebanded Data:", basebanded)
 
 	case 2: // Bipolar
+		basebandFlag = "Bipolar"
 		fmt.Println("Aplicando Bipolar...")
 		basebanded = baseband_modulation.BipolarModulation(data, V)
 		fmt.Println("Basebanded Data:", basebanded)
 
 	case 3: // Manchester
+		basebandFlag = "Manchester"
 		fmt.Println("Aplicando Manchester...")
 		basebanded = baseband_modulation.ManchesterModulation(data, V)
 		fmt.Println("Basebanded Data:", basebanded)
+
+	default:
+		fmt.Println("Método de modulação inválido!")
 	}
 
 	// Envia a mensagem para o servidor via socket
 	// Invoca socket_client.go para comunicação com o servidor
-	Send(basebanded)
+	Send(basebanded, framingFlag, carrierFlag, basebandFlag)
 }
