@@ -1,7 +1,6 @@
-package main
+package error_correction
 
 import (
-	"fmt"
 	"math"
 )
 
@@ -89,6 +88,7 @@ func isPowerOfTwo(n int) bool {
 	return n > 0 && (n&(n-1)) == 0
 }
 
+/*
 func main() {
 	// data := []int{1, 1, 0, 1, 0, 0, 1} // Data original
 	data := []int{1, 1, 1, 0, 1, 1}
@@ -114,3 +114,4 @@ func main() {
 		fmt.Println("No error detected.")
 	}
 }
+*/

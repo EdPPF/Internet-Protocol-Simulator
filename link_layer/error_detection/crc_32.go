@@ -1,10 +1,9 @@
-package main
+package error_detection
 
 // package error_detection
 
 import (
 	"IP_sim/common"
-	"fmt"
 )
 
 // CRC32Table stores the precomputed CRC32 lookup table
@@ -43,11 +42,4 @@ func ComputeCRC32(data []byte) uint32 {
 		crc = (crc << 8) ^ CRC32Table[tableIndex]
 	}
 	return ^crc // Final XOR to invert the bits
-}
-
-func main() {
-	data := []byte("hello")
-	// data := []byte("123456789")
-	crc := ComputeCRC32(data) // 1931653D | 181989fc
-	fmt.Printf("CRC32 Checksum (Big-Endian): %08X\n", crc)
 }
