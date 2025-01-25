@@ -2,6 +2,7 @@ package framing
 
 import (
 	"IP_sim/common"
+	"IP_sim/common/utils"
 	"bytes"
 	"errors"
 )
@@ -18,7 +19,7 @@ func main() {
 	fmt.Println("Framed Data (string)  :", utils.ToString(framed))
 
 	// Unframe the data
-	unframed, err := DencodeByteInsert(framed)
+	unframed, err := DecodeByteInsert(framed)
 	if err != nil {
 		fmt.Println("Error unframing data:", err)
 		return
@@ -52,7 +53,7 @@ func EncodeByteInsert(data []byte) []byte {
 }
 
 // Remove bytes do início e fim do array de dados.
-func DencodeByteInsert(framedData []byte) ([]byte, error) {
+func DecodeByteInsert(framedData []byte) ([]int, error) {
 	// Verifica se o quadro é válido
 	if len(framedData) < 2 || framedData[0] != common.STX || framedData[len(framedData)-1] != common.ETX {
 		return nil, errors.New("invalid frame")
@@ -84,5 +85,8 @@ func DencodeByteInsert(framedData []byte) ([]byte, error) {
 		return nil, errors.New("malformed frame (dangling ESC)")
 	}
 
-	return unframed.Bytes(), nil
+	bytes := unframed.Bytes()
+	// Converte []byte em []int
+	bits := utils.FromBytesToInts(bytes)
+	return bits, nil
 }

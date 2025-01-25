@@ -1,7 +1,6 @@
 package server
 
 import (
-	"IP_sim/common"
 	"encoding/gob"
 	"fmt"
 	"net"
@@ -12,6 +11,10 @@ type Payload struct {
 	FramingFlag     string
 	CarrierFlag     string
 	BasebandFlag    string
+	Amplitude       float64 // Para QAM8 e ASK
+	Frequency       float64 // Para QAM8 e ASK
+	F1              float64 // Low Freq Para FSK
+	F2              float64 // High Freq Para FSK
 }
 
 func handleConnection(conn net.Conn) {
@@ -26,7 +29,15 @@ func handleConnection(conn net.Conn) {
 	}
 	fmt.Printf("Mensagem recebida: %v\n", payload.ModulatedSignal)
 
-	// TODO: Implementar a lógica de demodulação
+	// Processa o payload
+	originalMessage, err := ProcessPayload(payload)
+	if err != nil {
+		fmt.Println("Erro ao processar o payload:", err)
+		return
+	}
+
+	// Exibe a mensagem original
+	fmt.Printf("Mensagem original: %s\n", originalMessage)
 
 	// Envia um ack para o cliente
 	ack := "Mensagem recebida."
@@ -36,25 +47,4 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 	fmt.Println("Ack enviado.")
-}
-
-func Start() {
-	// Inicia o servidor
-	listener, err := net.Listen(common.Type, common.Host+":"+common.Port)
-	if err != nil {
-		fmt.Println("Erro ao iniciar o servidor:", err)
-		return
-	}
-	defer listener.Close()
-
-	fmt.Println("Servidor iniciado em " + common.Host + ":" + common.Port + ". Aguardando conexões...")
-
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			fmt.Println("Erro ao aceitar a conexão:", err)
-			continue
-		}
-		go handleConnection(conn)
-	}
 }

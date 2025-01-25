@@ -54,9 +54,9 @@ func plotSignal(signal []float64, A float64) {
 	}
 }
 
-func AskDemodulation(signal []float64) []int {
+func AskDemodulation(signal []float64) []float64 {
 	var signalLen = len(signal)
-	var demodulatedSignal []int
+	var demodulatedSignal []float64
 	for i := 0; i < signalLen; i += 100 {
 		foundNonZero := false
 		for _, v := range signal[i : i+100] {
@@ -66,9 +66,9 @@ func AskDemodulation(signal []float64) []int {
 			}
 		}
 		if foundNonZero {
-			demodulatedSignal = append(demodulatedSignal, 1)
+			demodulatedSignal = append(demodulatedSignal, 1.0)
 		} else {
-			demodulatedSignal = append(demodulatedSignal, 0)
+			demodulatedSignal = append(demodulatedSignal, 0.0)
 		}
 	}
 	return demodulatedSignal

@@ -55,10 +55,10 @@ func fsk_plotSignal(signal []float64, A float64) {
 	}
 }
 
-func FskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float64) []int {
+func FskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float64) []float64 {
 	// Calculate number of bits based on signal length (100 samples per bit)
 	numBits := len(modulatedSignal) / 100
-	demodulatedBits := make([]int, numBits)
+	demodulatedBits := make([]float64, numBits)
 
 	// Process each bit period
 	for i := 0; i < numBits; i++ {
@@ -77,9 +77,9 @@ func FskDemodulation(modulatedSignal []float64, A float64, f1 float64, f2 float6
 
 		// Decision: if correlation with f1 is stronger, bit is 1
 		if math.Abs(corr1) > math.Abs(corr2) {
-			demodulatedBits[i] = 1
+			demodulatedBits[i] = 1.0
 		} else {
-			demodulatedBits[i] = 0
+			demodulatedBits[i] = 0.0
 		}
 	}
 

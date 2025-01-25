@@ -14,10 +14,14 @@ type Payload struct {
 	FramingFlag     string
 	CarrierFlag     string
 	BasebandFlag    string
+	Amplitude       float64 // Para QAM8 e ASK
+	Frequency       float64 // Para QAM8 e ASK
+	F1              float64 // Low Freq Para FSK
+	F2              float64 // High Freq Para FSK
 }
 
 // Semd conecta ao servidor e envia uma mensagem modulata do tipo []float64
-func Send(modulatedSignal []float64, framingFlag, carrierFlag, basebandFlag string) {
+func Send(modulatedSignal []float64, framingFlag, carrierFlag, basebandFlag string, A, f, f1, f2 float64) {
 	// Conecta ao servidor
 	conn, err := net.Dial(common.Type, common.Host+":"+common.Port)
 	if err != nil {
@@ -32,6 +36,10 @@ func Send(modulatedSignal []float64, framingFlag, carrierFlag, basebandFlag stri
 			FramingFlag:     framingFlag,
 			CarrierFlag:     carrierFlag,
 			BasebandFlag:    basebandFlag,
+			Amplitude:       A,
+			Frequency:       f,
+			F1:              f1,
+			F2:              f2,
 		}
 
 		// Encode the payload using gob

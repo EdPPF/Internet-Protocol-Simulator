@@ -76,9 +76,9 @@ func qam_plotSignal(signal []float64, A float64) {
 	}
 }
 
-func Qam8Demodulation(modulatedSignal []float64, A float64, f float64) []int {
+func Qam8Demodulation(modulatedSignal []float64, A float64, f float64) []float64 {
 	numSymbols := len(modulatedSignal) / 100
-	demodulatedBits := make([]int, numSymbols*3)
+	demodulatedBits := make([]float64, numSymbols*3)
 
 	for i := 0; i < numSymbols; i++ {
 		firstCoordinate := modulatedSignal[i*100]
@@ -91,43 +91,43 @@ func Qam8Demodulation(modulatedSignal []float64, A float64, f float64) []int {
 		if firstCoordinate > -A/2 && firstCoordinate < A/2 {
 			if secondCoordinate > firstCoordinate {
 				// upwards
-				demodulatedBits[i*3] = 0
-				demodulatedBits[i*3+1] = 0
-				demodulatedBits[i*3+2] = 0
+				demodulatedBits[i*3] = 0.0
+				demodulatedBits[i*3+1] = 0.0
+				demodulatedBits[i*3+2] = 0.0
 			} else {
 				// downwards
-				demodulatedBits[i*3] = 0
-				demodulatedBits[i*3+1] = 1
-				demodulatedBits[i*3+2] = 0
+				demodulatedBits[i*3] = 0.0
+				demodulatedBits[i*3+1] = 1.0
+				demodulatedBits[i*3+2] = 0.0
 			}
 		}
 
 		// A:
 		if firstCoordinate <= A && firstCoordinate >= A/2 {
-			demodulatedBits[i*3] = 0
-			demodulatedBits[i*3+1] = 0
-			demodulatedBits[i*3+2] = 1
+			demodulatedBits[i*3] = 0.0
+			demodulatedBits[i*3+1] = 0.0
+			demodulatedBits[i*3+2] = 1.0
 		}
 
 		// -A:
 		if firstCoordinate >= -A && firstCoordinate <= -A/2 {
-			demodulatedBits[i*3] = 0
-			demodulatedBits[i*3+1] = 1
-			demodulatedBits[i*3+2] = 1
+			demodulatedBits[i*3] = 0.0
+			demodulatedBits[i*3+1] = 1.0
+			demodulatedBits[i*3+2] = 1.0
 		}
 
 		// ~2A:
 		if firstCoordinate > A {
 			if secondCoordinate > firstCoordinate {
 				// upwards
-				demodulatedBits[i*3] = 1
-				demodulatedBits[i*3+1] = 0
-				demodulatedBits[i*3+2] = 0
+				demodulatedBits[i*3] = 1.0
+				demodulatedBits[i*3+1] = 0.0
+				demodulatedBits[i*3+2] = 0.0
 			} else {
 				// downwards
-				demodulatedBits[i*3] = 1
-				demodulatedBits[i*3+1] = 0
-				demodulatedBits[i*3+2] = 1
+				demodulatedBits[i*3] = 1.0
+				demodulatedBits[i*3+1] = 0.0
+				demodulatedBits[i*3+2] = 1.0
 			}
 		}
 
@@ -135,14 +135,14 @@ func Qam8Demodulation(modulatedSignal []float64, A float64, f float64) []int {
 		if firstCoordinate < -A {
 			if secondCoordinate > firstCoordinate {
 				// upwards
-				demodulatedBits[i*3] = 1
-				demodulatedBits[i*3+1] = 1
-				demodulatedBits[i*3+2] = 1
+				demodulatedBits[i*3] = 1.0
+				demodulatedBits[i*3+1] = 1.0
+				demodulatedBits[i*3+2] = 1.0
 			} else {
 				// downwards
-				demodulatedBits[i*3] = 1
-				demodulatedBits[i*3+1] = 1
-				demodulatedBits[i*3+2] = 0
+				demodulatedBits[i*3] = 1.0
+				demodulatedBits[i*3+1] = 1.0
+				demodulatedBits[i*3+2] = 0.0
 			}
 		}
 	}
