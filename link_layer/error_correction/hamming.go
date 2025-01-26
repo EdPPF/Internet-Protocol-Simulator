@@ -1,13 +1,20 @@
-package main
+package error_correction
 
 import (
+	"IP_sim/common/utils"
 	"fmt"
 	"math"
 )
 
 // HammingEncode encodes the given data using Hamming code
-func HammingEncode(data []int) []int {
-	m := len(data) // Número de bits na mensagem original
+func HammingEncode(data string) ([]int, error) {
+	// Converte a string de entrada em uma matriz de inteiros
+	binaryData, err := utils.ParseBinaryString(data)
+	if err != nil {
+		return nil, err
+	}
+
+	m := len(binaryData) // Número de bits na mensagem original
 	r := calculateRedundantBits(m)
 
 	// Mensagem codificada com espaço para os bits de paridade
@@ -19,7 +26,7 @@ func HammingEncode(data []int) []int {
 		if isPowerOfTwo(i + 1) { // if (1 << i) & 1 != 0 ???
 			continue // Pula as posições de paridade, que são as potências de 2
 		}
-		encoded[i] = data[j]
+		encoded[i] = binaryData[j]
 		j++
 	}
 
@@ -29,7 +36,17 @@ func HammingEncode(data []int) []int {
 		encoded[parityPos] = calculateParity(encoded, parityPos)
 	}
 
-	return encoded
+	return encoded, nil
+}
+
+func HammingEncodeWrapper(input interface{}) (interface{}, error) {
+	data, ok := input.(string)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for HammingEncode")
+	}
+
+	result, err := HammingEncode(data)
+	return result, err
 }
 
 // Decodifica a mensagem recebida e corrige um (1, uno, one, 一) erro, se houver
@@ -63,6 +80,19 @@ func HammingDecode(received []int) ([]int, int) {
 	return data, syndrome
 }
 
+func HammingDecodeWrapper(input interface{}) (interface{}, error) {
+	received, ok := input.([]int)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for HammingDecode")
+	}
+
+	data, syndrome := HammingDecode(received)
+	return struct {
+		Data     []int
+		Syndrome int
+	}{Data: data, Syndrome: syndrome}, nil
+}
+
 // Determina o número de bits de paridade de acordo com a regra: 2^r >= m+r+1
 func calculateRedundantBits(dataBits int) int {
 	for r := 0; ; r++ {
@@ -74,14 +104,21 @@ func calculateRedundantBits(dataBits int) int {
 
 // Calcula o valor do bit de paridade para uma posição específica
 func calculateParity(bits []int, parityPos int) int {
-	parity := 0
+	/*parity := 0
 	for i := 0; i < len(bits); i++ {
 		// Check if the bit at position `i` contributes to the parity bit at `parityPos`
 		if (i+1)&(parityPos+1) != 0 { // Use (i+1) for 1-based parity logic
 			parity ^= bits[i]
 		}
 	}
-	return parity
+	return parity*/
+	count := 0
+	for i := parityPos; i < len(bits); i += 2 * (parityPos + 1) {
+		for j := 0; j < parityPos+1 && i+j < len(bits); j++ {
+			count += bits[i+j]
+		}
+	}
+	return count % 2
 }
 
 // Verifica se um número é potência de 2...
@@ -89,14 +126,15 @@ func isPowerOfTwo(n int) bool {
 	return n > 0 && (n&(n-1)) == 0
 }
 
+/*
 func main() {
-	// data := []int{1, 1, 0, 1, 0, 0, 1} // Data original
-	data := []int{1, 1, 1, 0, 1, 1}
+	// data := []int{1, 1, 0, 1, 0, 0, 1}
+	data := "111011"
 	fmt.Println("Original Data:", data)
 
 	// Encode
 	// encoded := HammingEncode(data) // 01101011001
-	encoded := HammingEncode(data)
+	encoded, _ := HammingEncode(data)
 	fmt.Println("Encoded Data (1 1 1 0 1 1 0 0 1 1):", encoded)
 
 	// Introduz erro
@@ -114,3 +152,4 @@ func main() {
 		fmt.Println("No error detected.")
 	}
 }
+*/

@@ -1,9 +1,7 @@
-package main
+package carrier_modulation
 
 import (
-	// "os"
-	// "fmt"
-	// "strconv"
+	"fmt"
 	"log"
 	"math"
 
@@ -28,6 +26,20 @@ func askModulation(A float64, F float64, bitStream []int) []float64 {
 	}
 	plotSignal(modulatedSignal, A)
 	return modulatedSignal
+}
+
+func AskModulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		A         float64
+		F         float64
+		BitStream []int
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for askModulation")
+	}
+
+	result := askModulation(params.A, params.F, params.BitStream)
+	return result, nil
 }
 
 func plotSignal(signal []float64, A float64) {
@@ -72,6 +84,16 @@ func askDemodulation(signal []float64) []int {
 		}
 	}
 	return demodulatedSignal
+}
+
+func AskDemodulationWrapper(input interface{}) (interface{}, error) {
+	signal, ok := input.([]float64)
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for askDemodulation")
+	}
+
+	result := askDemodulation(signal)
+	return result, nil
 }
 
 // func main() {

@@ -1,12 +1,64 @@
-package communication
+// Manages socket communication.
+// Sends the encoded message to the server and optionally waits for an acknowledgment.
+package client
 
 import (
+	"IP_sim/common"
+	"bytes"
+	"encoding/gob"
+	"fmt"
+	"net"
+)
+
+func Send(data interface{}) {
+	// Connect to server
+	conn, err := net.Dial(common.Type, common.Host+":"+common.Port)
+	if err != nil {
+		fmt.Println("Error ao conectar ao server:", err)
+		return
+	}
+	defer conn.Close()
+
+	var buf bytes.Buffer
+	encoder := gob.NewEncoder(&buf)
+	err = encoder.Encode(data)
+	if err != nil {
+		fmt.Println("Error encoding data:", err)
+		return
+	}
+
+	_, err = conn.Write(buf.Bytes())
+	if err != nil {
+		fmt.Println("Error sending data:", err)
+	}
+	fmt.Println("Mensagem enviada com sucesso.")
+}
+
+/*
+// Test the client connection (for local testing)
+func main() {
+	// Example signal (replace with actual modulated signal)
+	signal := []float64{0.1, 0.5, -0.3, 1.0, -0.8}
+
+	fmt.Println("Sending signal:", signal)
+
+	err := Send(signal)
+	if err != nil {
+		fmt.Printf("Error sending signal: %v\n", err)
+	} else {
+		fmt.Println("Signal sent successfully.")
+	}
+}
+*/
+
+/*
+import (
+	"IP_sim/common"
 	"bufio"
 	"fmt"
 	"net"
 	"os"
 	"sync"
-	"IP_sim/common"
 )
 
 func StartClient(wg *sync.WaitGroup, message string) {
@@ -15,7 +67,7 @@ func StartClient(wg *sync.WaitGroup, message string) {
 	defer wg.Done()
 
 	// Connect to server
-	conn, err := net.Dial(common.Type, common.Host + ":" + common.Port)
+	conn, err := net.Dial(common.Type, common.Host+":"+common.Port)
 	if err != nil {
 		fmt.Println("Error connecting:", err)
 		return
@@ -66,3 +118,4 @@ func StartClient(wg *sync.WaitGroup, message string) {
 		fmt.Println("Resposta do servidor:", string(buffer[:data]))
 	}
 }
+*/

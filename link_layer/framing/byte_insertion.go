@@ -1,37 +1,19 @@
-package main
+package framing
 
 import (
 	"IP_sim/common"
 	"IP_sim/common/utils"
 	"bytes"
 	"errors"
-	"fmt"
 )
-
-func main() {
-	message := "Hello, \x02World!"
-	fmt.Println("Original Data (string):", message)
-	fmt.Println("Original Data (bytes ):", utils.ToBytes(message))
-
-	// Frame the data
-	framed := EncodeByteInsert(utils.ToBytes(message))
-	fmt.Println("Framed Data (bytes )  :", framed)
-	fmt.Println("Framed Data (string)  :", utils.ToString(framed))
-
-	// Unframe the data
-	unframed, err := DencodeByteInsert(framed)
-	if err != nil {
-		fmt.Println("Error unframing data:", err)
-		return
-	}
-
-	fmt.Println("Unframed Data         :", utils.ToString(unframed))
-}
 
 // Insere bytes ou chars no início e fim do array de dados.
 // Cada quadro começa e termina com um byte especial, chamado de byte de flag.
 // O enquadramento é feitoc por adição de caracteres ASCII.
-func EncodeByteInsert(data []byte) []byte {
+func EncodeByteInsert(msg string) []int {
+	// data := utils.StringToBinary(msg)
+	data := utils.ToBytes(msg)
+
 	var framed bytes.Buffer
 
 	// Adiciona o início do quadro
@@ -48,7 +30,16 @@ func EncodeByteInsert(data []byte) []byte {
 	// Adiciona o fim do quadro
 	framed.WriteByte(common.ETX)
 
-	return framed.Bytes()
+	intFramed := utils.BytesToInt(framed.Bytes())
+	return intFramed
+}
+
+func EncodeByteInsertWrapper(data interface{}) (interface{}, error) {
+	d, ok := data.(string)
+	if !ok {
+		return nil, errors.New("invalid input type for EncodeByteInsert")
+	}
+	return EncodeByteInsert(d), nil
 }
 
 // Remove bytes do início e fim do array de dados.
@@ -85,4 +76,12 @@ func DencodeByteInsert(framedData []byte) ([]byte, error) {
 	}
 
 	return unframed.Bytes(), nil
+}
+
+func DecodeByteInsertWrapper(data interface{}) (interface{}, error) {
+	d, ok := data.([]byte)
+	if !ok {
+		return nil, errors.New("invalid input type for DecodeByteInsert")
+	}
+	return DencodeByteInsert(d)
 }

@@ -1,9 +1,7 @@
-package main
+package carrier_modulation
 
 import (
-	// "os"
 	"fmt"
-	// "strconv"
 	"log"
 	"math"
 
@@ -48,8 +46,22 @@ func qam8Modulation(A float64, f float64, bitStream []int) []float64 {
 			modulatedSignal[i*100+k] = A * coordinate.amplitude * math.Sin((2*math.Pi*f*float64(k)/100)+coordinate.phase)
 		}
 	}
-	plotSignal(modulatedSignal, A)
+	qam_plotSignal(modulatedSignal, A)
 	return modulatedSignal
+}
+
+func Qam8ModulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		A         float64
+		F         float64
+		BitStream []int
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for qam8Modulation")
+	}
+
+	result := qam8Modulation(params.A, params.F, params.BitStream)
+	return result, nil
 }
 
 func qam_plotSignal(signal []float64, A float64) {
@@ -148,6 +160,20 @@ func qam8Demodulation(modulatedSignal []float64, A float64, f float64) []int {
 	}
 
 	return demodulatedBits
+}
+
+func Qam8DemodulationWrapper(input interface{}) (interface{}, error) {
+	params, ok := input.(struct {
+		ModulatedSignal []float64
+		A               float64
+		F               float64
+	})
+	if !ok {
+		return nil, fmt.Errorf("invalid input type for qam8Demodulation")
+	}
+
+	result := qam8Demodulation(params.ModulatedSignal, params.A, params.F)
+	return result, nil
 }
 
 // func main() {
